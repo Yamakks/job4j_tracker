@@ -12,11 +12,11 @@ public class Jukebox {
         }
 
     public static void main(String[] args) {
-        Jukebox box = new Jukebox();
-        box.music(0);
-        box.music(1);
-        box.music(2);
-        box.music(3);
+        Jukebox box1 = new Jukebox();
+        box1.music(0);
+        box1.music(1);
+        box1.music(2);
+        box1.music(3);
 
     }
 }
