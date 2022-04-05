@@ -13,7 +13,7 @@ public class Jukebox {
 
     public static void main(String[] args) {
         Jukebox box = new Jukebox();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
             box.music(i);
         }
     }
