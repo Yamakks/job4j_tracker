@@ -1,10 +1,6 @@
 package ru.job4j.oop;
 
 public class Cat {
-    public String sound() {
-        String voice = "may-may";
-        return voice;
-    }
 
     private String food;
 
@@ -20,6 +16,11 @@ public class Cat {
 
     public void giveNick(String nick) {
         this.name = nick;
+    }
+
+    public String sound() {
+        String voice = "may-may";
+        return voice;
     }
 
     public static void main(String[] args) {
