@@ -37,4 +37,22 @@ public class PointTest {
         double out = p1.distance(p2);
         Assert.assertEquals(expected, out, 0.005);
     }
+
+    @Test
+    public void whenX1Y1Z1x0y0z0Then1Pouit73() {
+        Point p1 = new Point(0, 0, 0);
+        Point p2 = new Point(1, 1, 1);
+        double expected = 1.73;
+        double out = p1.distance3d(p2);
+        Assert.assertEquals(expected, out, 0.005);
+    }
+
+    @Test
+    public void whenX0Y0Z0x0y0z3then3() {
+        Point p1 = new Point(0, 0, 0);
+        Point p2 = new Point(0, 0, 3);
+        double expected = 3;
+        double out = p1.distance3d(p2);
+        Assert.assertEquals(expected, out, 0.005);
+    }
 }
