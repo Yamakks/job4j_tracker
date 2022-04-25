@@ -51,6 +51,8 @@ public class Tracker {
         if (index != -1) {
             item.setId(id);
             items[index] = item;
+        } else {
+            System.out.println("Индекс " + id + " не найден");
         }
         return (index != -1);
     }
@@ -61,6 +63,8 @@ public class Tracker {
             System.arraycopy(items, index + 1, items, index, size - index - 1);
             items[size - 1] = null;
             size--;
+        } else {
+            System.out.println("Индекс " + id + " не найден");
         }
         return (index != -1);
     }
