@@ -26,7 +26,7 @@ public class Tracker {
 
     public Item findById(int id) {
         int index = indexOf(id);
-        return (index != -1 ? items[index] : null);
+        return index != -1 ? items[index] : null;
     }
 
     public Item[] findAll() {
@@ -54,7 +54,7 @@ public class Tracker {
         } else {
             System.out.println("Индекс " + id + " не найден");
         }
-        return (index != -1);
+        return index != -1;
     }
 
     public boolean delete(int id) {
