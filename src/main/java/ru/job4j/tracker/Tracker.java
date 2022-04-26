@@ -66,6 +66,6 @@ public class Tracker {
         } else {
             System.out.println("Индекс " + id + " не найден");
         }
-        return (index != -1);
+        return index != -1;
     }
 }
