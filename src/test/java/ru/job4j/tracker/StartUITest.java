@@ -1,6 +1,10 @@
 package ru.job4j.tracker;
 
 import org.junit.Test;
+
+import java.time.format.DateTimeFormatter;
+import java.util.Formatter;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
@@ -67,6 +71,113 @@ public class StartUITest {
         assertThat(out.toString(), is(
                 "Menu:" + ln
                         + "0. Exit" + ln
+        ));
+    }
+
+    @Test
+    public void whenReplaceItemTestOutputIsSuccessfully() {
+        Output out = new StubOutput();
+        Tracker tracker = new Tracker();
+        Item one = tracker.add(new Item("test1"));
+        String replaceName = "New Test Name";
+        Input in = new StubInput(
+                new String[] {"0", String.valueOf(one.getId()), replaceName, "1"}
+        );
+        UserAction[] actions = new UserAction[]{
+                new EditAction(out),
+                new ExitAction()
+        };
+        new StartUI(out).init(in, tracker, actions);
+        String ln = System.lineSeparator();
+        assertThat(out.toString(), is(
+                "Menu:" + ln
+                        + "0. Edit Item" + ln
+                        + "1. Exit" + ln
+                        + "=== Edit item ===" + ln
+                        + "Заявка изменена успешно." + ln
+                        + "Menu:" + ln
+                        + "0. Edit Item" + ln
+                        + "1. Exit" + ln
+        ));
+    }
+
+    @Test
+    public void whenFindAllTestOutputIsSuccessfully() {
+        Output out = new StubOutput();
+        Tracker tracker = new Tracker();
+        Item one = tracker.add(new Item("test1"));
+        Input in = new StubInput(
+                new String[] {"0", "1"}
+        );
+        UserAction[] actions = new UserAction[]{
+                new FindAllAction(out),
+                new ExitAction()
+        };
+        new StartUI(out).init(in, tracker, actions);
+        String ln = System.lineSeparator();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMMM-EEEE-yyyy HH:mm:ss");
+        assertThat(out.toString(), is(
+                "Menu:" + ln
+                        + "0. Show All Items" + ln
+                        + "1. Exit" + ln
+                        + "Item{id=1, name='test1', created='" + one.getCreated().format(formatter) + "'}" + ln
+                        + "Menu:" + ln
+                        + "0. Show All Items" + ln
+                        + "1. Exit" + ln
+        ));
+    }
+
+    @Test
+    public void whenFindByNameTestOutputIsSuccessfully() {
+        Output out = new StubOutput();
+        Tracker tracker = new Tracker();
+        Item one = tracker.add(new Item("test1"));
+        Input in = new StubInput(
+                new String[] {"0", one.getName(), "1"}
+        );
+        UserAction[] actions = new UserAction[]{
+                new FindByNameAction(out),
+                new ExitAction()
+        };
+        new StartUI(out).init(in, tracker, actions);
+        String ln = System.lineSeparator();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMMM-EEEE-yyyy HH:mm:ss");
+        assertThat(out.toString(), is(
+                "Menu:" + ln
+                        + "0. Find Item by Name" + ln
+                        + "1. Exit" + ln
+                        + "=== Find item by name ===" + ln
+                        + "Item{id=1, name='test1', created='" + one.getCreated().format(formatter) + "'}" + ln
+                        + "Menu:" + ln
+                        + "0. Find Item by Name" + ln
+                        + "1. Exit" + ln
+        ));
+    }
+
+    @Test
+    public void whenFindByIDTestOutputIsSuccessfully() {
+        Output out = new StubOutput();
+        Tracker tracker = new Tracker();
+        Item one = tracker.add(new Item("test1"));
+        Input in = new StubInput(
+                new String[] {"0", String.valueOf(one.getId()), "1"}
+        );
+        UserAction[] actions = new UserAction[]{
+                new FindItemByIdAction(out),
+                new ExitAction()
+        };
+        new StartUI(out).init(in, tracker, actions);
+        String ln = System.lineSeparator();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMMM-EEEE-yyyy HH:mm:ss");
+        assertThat(out.toString(), is(
+                "Menu:" + ln
+                        + "0. Find Item by ID" + ln
+                        + "1. Exit" + ln
+                        + "=== Find item by id ===" + ln
+                        + "Item{id=1, name='test1', created='" + one.getCreated().format(formatter) + "'}" + ln
+                        + "Menu:" + ln
+                        + "0. Find Item by ID" + ln
+                        + "1. Exit" + ln
         ));
     }
 }
