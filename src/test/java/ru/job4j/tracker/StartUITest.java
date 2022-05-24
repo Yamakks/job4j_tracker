@@ -3,7 +3,6 @@ package ru.job4j.tracker;
 import org.junit.Test;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Formatter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -120,7 +119,7 @@ public class StartUITest {
                 "Menu:" + ln
                         + "0. Show All Items" + ln
                         + "1. Exit" + ln
-                        + "Item{id=1, name='test1', created='" + one.getCreated().format(formatter) + "'}" + ln
+                        + one + ln
                         + "Menu:" + ln
                         + "0. Show All Items" + ln
                         + "1. Exit" + ln
@@ -147,7 +146,7 @@ public class StartUITest {
                         + "0. Find Item by Name" + ln
                         + "1. Exit" + ln
                         + "=== Find item by name ===" + ln
-                        + "Item{id=1, name='test1', created='" + one.getCreated().format(formatter) + "'}" + ln
+                        + one + ln
                         + "Menu:" + ln
                         + "0. Find Item by Name" + ln
                         + "1. Exit" + ln
@@ -174,7 +173,7 @@ public class StartUITest {
                         + "0. Find Item by ID" + ln
                         + "1. Exit" + ln
                         + "=== Find item by id ===" + ln
-                        + "Item{id=1, name='test1', created='" + one.getCreated().format(formatter) + "'}" + ln
+                        + one + ln
                         + "Menu:" + ln
                         + "0. Find Item by ID" + ln
                         + "1. Exit" + ln
