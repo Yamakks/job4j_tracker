@@ -59,7 +59,6 @@ public class TrackerTest {
         tracker.add(new Item("First"));
         tracker.add(new Item("Second"));
         tracker.add(new Item("First"));
-        //Item[] result = tracker.findByName(second.getName());
         assertEquals(second.getName(), tracker.findByName(second.getName()).get(1).getName());
     }
 
