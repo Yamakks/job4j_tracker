@@ -1,56 +1,61 @@
 package ru.job4j.tracker;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ValidateInputTest {
 
     @Test
     public void whenInvalidInput() {
         Output out = new StubOutput();
-        Input in = new StubInput(
-                new String[] {"one", "1"}
-        );
+        ArrayList<String> questions = new ArrayList<>();
+        questions.add("one");
+        questions.add("1");
+        Input in = new StubInput(questions);
         ValidateInput input = new ValidateInput(out, in);
         int selected = input.askInt("Enter menu:");
-        assertThat(selected, is(1));
+        assertEquals(1, selected);
     }
 
     @Test
     public void whenInputMinus() {
         Output out = new StubOutput();
-        Input in = new StubInput(
-                new String[] {"-1"}
-        );
+        ArrayList<String> questions = new ArrayList<>();
+        questions.add("-1");
+        Input in = new StubInput(questions);
         ValidateInput input = new ValidateInput(out, in);
         int selected = input.askInt("Enter menu:");
-        assertThat(selected, is(-1));
+        assertEquals(-1, selected);
     }
 
     @Test
     public void whenInputValid() {
         Output out = new StubOutput();
-        Input in = new StubInput(
-                new String[] {"1"}
-        );
+        ArrayList<String> questions = new ArrayList<>();
+        questions.add("1");
+        Input in = new StubInput(questions);
         ValidateInput input = new ValidateInput(out, in);
         int selected = input.askInt("Enter menu:");
-        assertThat(selected, is(1));
+        assertEquals(1, selected);
     }
 
     @Test
     public void whenInputMoreThatOne() {
         Output out = new StubOutput();
-        Input in = new StubInput(
-                new String[]{"0", "1", "2"});
+        ArrayList<String> questions = new ArrayList<>();
+        questions.add("0");
+        questions.add("1");
+        questions.add("2");
+        Input in = new StubInput(questions);
         ValidateInput input = new ValidateInput(out, in);
         int selected = input.askInt("Enter menu:");
-        assertThat(selected, is(0));
+        assertEquals(0, selected);
         selected = input.askInt("Enter menu:");
-        assertThat(selected, is(1));
+        assertEquals(1, selected);
         selected = input.askInt("Enter menu:");
-        assertThat(selected, is(2));
+        assertEquals(2, selected);
     }
 }
