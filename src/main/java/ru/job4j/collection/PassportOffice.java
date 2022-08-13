@@ -16,9 +16,6 @@ public class PassportOffice {
     }
 
     public Citizen get(String passport) {
-        if (citizens.get(passport) != null) {
             return citizens.get(passport);
-        }
-        return null;
     }
 }
