@@ -19,6 +19,7 @@ public class Departments {
     }
 
     public static void sortAsc(List<String> orgs) {
+        orgs.sort(String::compareTo);
     }
 
     public static void sortDesc(List<String> orgs) {
