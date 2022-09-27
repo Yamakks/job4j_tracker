@@ -5,10 +5,16 @@ import java.util.Comparator;
 public class DepDescComp implements Comparator<String> {
     @Override
     public int compare(String o1, String o2) {
-        int rsl = 0;
         String[] s1 = o1.split("/");
         String[] s2 = o2.split("/");
-        rsl = s1[0] == s2[0] ? compare(o1, o2);
-        return rsl == 0 ? o1.compareTo(o2) : o2.compareTo(o1);
+        int rsl = s2[0].compareTo(s1[0]);
+        if (rsl == 0 && s1.length == s2.length) {
+            for (int i = 1; i < s1.length; i++) {
+                rsl = s1[i].compareTo(s2[i]);
+            }
+        } else if (rsl == 0) {
+            rsl = o1.compareTo(o2);
+        }
+        return rsl;
     }
 }
