@@ -8,8 +8,6 @@ import java.util.stream.Stream;
 public class School {
     public List<Student> collect(List<Student> students, Predicate<Student> predicate) {
         return students.stream()
-                .flatMap(Stream::ofNullable)
-                .sorted()
                 .filter(predicate)
                 .collect(Collectors.toList());
     }
