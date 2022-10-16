@@ -1,8 +1,11 @@
 package ru.job4j.stream;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Comparator;
 import java.util.Objects;
 
-public class Address {
+public class Address implements Comparable<Address> {
     private String city;
 
     private String street;
@@ -18,7 +21,11 @@ public class Address {
         this.apartment = apartment;
     }
 
-    @Override
+    public String getCity() {
+        return city;
+    }
+
+        @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -37,4 +44,9 @@ public class Address {
     public int hashCode() {
         return Objects.hash(city, street, home, apartment);
     }
+
+        @Override
+        public int compareTo(Address o) {
+            return this.city.compareTo(o.getCity());
+        }
 }
