@@ -42,21 +42,22 @@ public class BankService {
     }
 
     /**
+     * Обновление 17.10.2022 : замена циклов на Stream API
      * Метод ищет клиента банка по паспортным данным
      * @param passport принимает паспортные данные в виде строки
      * @return если клиент с запрашиваемыми паспортными данными существует
      * метод возвращает объект типа User, в ином случае null
      */
     public User findByPassport(String passport) {
-        for (User key : users.keySet()) {
-            if (key.getPassport().equals(passport)) {
-                return key;
-            }
-        }
-        return null;
+        return users.keySet()
+                .stream()
+                .filter(p -> p.getPassport().equals(passport))
+                .findFirst()
+                .orElse(null);
     }
 
     /**
+     * Обновление 17.10.2022 : замена циклов на Stream API
      * Метод ищет счет у клиента банка по его реквизитам
      * @param passport принимает паспортные данные в виде строки
      * @param requisite принимает реквизиты счета в виде строки
@@ -67,11 +68,11 @@ public class BankService {
     public Account findByRequisite(String passport, String requisite) {
         User user = findByPassport(passport);
         if (user != null) {
-            for (Account acc : getAccounts(user)) {
-                if (acc.getRequisite().equals(requisite)) {
-                    return acc;
-                }
-            }
+            return users.get(user)
+                    .stream()
+                    .filter(p -> p.getRequisite().equals(requisite))
+                    .findFirst()
+                    .orElse(null);
        }
         return null;
     }
