@@ -8,7 +8,7 @@ public class AnalyzeByMap {
         int sum = 0;
         for (Pupil pupil : pupils) {
            for (Subject subject : pupil.subjects()) {
-               rsl += subject.score();
+               rsl += subject.getScore();
                sum++;
            }
         }
@@ -20,7 +20,7 @@ public class AnalyzeByMap {
         for (Pupil pupil : pupils) {
             double sum = 0;
             for (Subject subject : pupil.subjects()) {
-                sum = sum + subject.score();
+                sum = sum + subject.getScore();
             }
             labels.add(new Label(pupil.name(), sum / pupil.subjects().size()));
         }
@@ -32,8 +32,8 @@ public class AnalyzeByMap {
         Map<String, Integer> map = new HashMap<>();
         for (Pupil pupil : pupils) {
             for (Subject subject : pupil.subjects()) {
-                int buf = map.getOrDefault(subject.name(), 0);
-                map.put(subject.name(), buf + subject.score());
+                int buf = map.getOrDefault(subject.getName(), 0);
+                map.put(subject.getName(), buf + subject.getScore());
             }
         }
         for (String subjectName : map.keySet()) {
@@ -48,7 +48,7 @@ public class AnalyzeByMap {
         for (Pupil pupil : pupils) {
             double sum = 0;
             for (Subject subject : pupil.subjects()) {
-                sum = sum + subject.score();
+                sum = sum + subject.getScore();
             }
             labels.add(new Label(pupil.name(), sum));
         }
@@ -61,8 +61,8 @@ public class AnalyzeByMap {
         Map<String, Integer> map = new HashMap<>();
         for (Pupil pupil : pupils) {
             for (Subject subject : pupil.subjects()) {
-                int buf = map.getOrDefault(subject.name(), 0);
-                map.put(subject.name(), buf + subject.score());
+                int buf = map.getOrDefault(subject.getName(), 0);
+                map.put(subject.getName(), buf + subject.getScore());
             }
         }
         for (String subjectName : map.keySet()) {
