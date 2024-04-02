@@ -76,13 +76,42 @@ public class SqlTracker implements Store {
 
             @Override
     public boolean replace(int id, Item item) {
-        return false;
-    }
+                int rowsAffected = 0;
+                try (PreparedStatement preparedStatement =
+                             connection.prepareStatement("UPDATE items SET name=?, created=? WHERE id=?")) {
+                    preparedStatement.setString(1, item.getName());
+                    preparedStatement.setTimestamp(2, Timestamp.valueOf(item.getCreated()));
+                    preparedStatement.setInt(3, id);
+                    preparedStatement.execute();
+                    rowsAffected = preparedStatement.executeUpdate();
+                    if (rowsAffected > 0) {
+                        System.out.println("Изменения внесены в таблицу.");
+                    } else {
+                        System.out.println("Изменения не были внесены в таблицу.");
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return rowsAffected > 0;
+            }
 
     @Override
     public boolean delete(int id) {
-
-        return false;
+        int rowsAffected = 0;
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement("DELETE FROM items WHERE id=?")) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.execute();
+            rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Изменения внесены в таблицу.");
+            } else {
+                System.out.println("Изменения не были внесены в таблицу.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return rowsAffected > 0;
     }
 
     @Override
