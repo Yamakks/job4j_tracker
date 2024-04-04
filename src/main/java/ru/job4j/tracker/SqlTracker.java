@@ -3,6 +3,7 @@ package ru.job4j.tracker;
 import java.io.InputStream;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -34,15 +35,6 @@ public class SqlTracker implements Store {
         }
     }
 
-    private void doStatement(String query) throws SQLException {
-        try (Statement statement = connection.createStatement()) {
-            if (query.startsWith("CREATE")) {
-                statement.execute(query);
-            }
-            statement.executeUpdate(query);
-        }
-    }
-
     @Override
     public void close() throws SQLException {
         if (connection != null) {
@@ -53,20 +45,18 @@ public class SqlTracker implements Store {
     @Override
     public Item add(Item item) {
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement("INSERT INTO items(name, created) VALUES (?, ?)")) {
+                     connection.prepareStatement("INSERT INTO items(name, created) VALUES (?, ?)",
+                             Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, item.getName());
             preparedStatement.setTimestamp(2, Timestamp.valueOf(item.getCreated()));
             preparedStatement.execute();
 
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    long id = generatedKeys.getLong(1);
-                    item.setId((int) id);
+                    item.setId(generatedKeys.getInt(1));
                 } else {
                     throw new SQLException("Сгенерированный ключ не найден.");
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -76,15 +66,14 @@ public class SqlTracker implements Store {
 
             @Override
     public boolean replace(int id, Item item) {
-                int rowsAffected = 0;
+                boolean result = false;
                 try (PreparedStatement preparedStatement =
                              connection.prepareStatement("UPDATE items SET name=?, created=? WHERE id=?")) {
                     preparedStatement.setString(1, item.getName());
                     preparedStatement.setTimestamp(2, Timestamp.valueOf(item.getCreated()));
                     preparedStatement.setInt(3, id);
-                    preparedStatement.execute();
-                    rowsAffected = preparedStatement.executeUpdate();
-                    if (rowsAffected > 0) {
+                    result = preparedStatement.executeUpdate() > 0;
+                    if (result) {
                         System.out.println("Изменения внесены в таблицу.");
                     } else {
                         System.out.println("Изменения не были внесены в таблицу.");
@@ -92,18 +81,17 @@ public class SqlTracker implements Store {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                return rowsAffected > 0;
+                return result;
             }
 
     @Override
     public boolean delete(int id) {
-        int rowsAffected = 0;
+        boolean result = false;
         try (PreparedStatement preparedStatement =
                      connection.prepareStatement("DELETE FROM items WHERE id=?")) {
             preparedStatement.setInt(1, id);
-            preparedStatement.execute();
-            rowsAffected = preparedStatement.executeUpdate();
-            if (rowsAffected > 0) {
+            result = preparedStatement.executeUpdate() > 0;
+            if (result) {
                 System.out.println("Изменения внесены в таблицу.");
             } else {
                 System.out.println("Изменения не были внесены в таблицу.");
@@ -111,21 +99,63 @@ public class SqlTracker implements Store {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return rowsAffected > 0;
+        return result;
     }
 
     @Override
     public List<Item> findAll() {
-        return List.of();
+        List<Item> allItems = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM items")) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    resultSet.getTimestamp(3);
+                    allItems.add(new Item(
+                            resultSet.getInt("id"),
+                            resultSet.getString("name")
+                    ));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return allItems;
     }
 
     @Override
     public List<Item> findByName(String key) {
-        return List.of();
+        List<Item> nameItems = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM items WHERE name = ?")) {
+            statement.setString(1, key);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    resultSet.getTimestamp(3);
+                    nameItems.add(new Item(
+                            resultSet.getInt("id"),
+                            resultSet.getString("name")
+                    ));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return nameItems;
     }
 
     @Override
     public Item findById(int id) {
-        return null;
+        Item idItem = new Item();
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM items WHERE id = ?")) {
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    resultSet.getTimestamp(3);
+                    idItem.setId(resultSet.getInt("id"));
+                    idItem.setName(resultSet.getString("name"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return idItem;
     }
 }
