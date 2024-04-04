@@ -60,6 +60,7 @@ public class MemTracker implements  Store {
         if (rsl) {
             items.remove(index);
         }
+        return rsl;
     }
 
     @Override
