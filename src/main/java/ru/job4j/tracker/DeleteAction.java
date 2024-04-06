@@ -18,7 +18,7 @@ public class DeleteAction implements UserAction {
         int id = input.askInt("Enter id: ");
         int init = memTracker.findById(id).getId();
         if (init != id) {
-            out.println("Ошибка удаления заявки. Заявки с данным ID нет.");
+            out.println("Ошибка удаления заявки. Заявки с данным ID не существует.");
         } else  {
             out.println("Заявка удалена успешно.");
         }
