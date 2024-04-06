@@ -5,7 +5,7 @@ import java.util.List;
 public final class SingleTracker {
     private static SingleTracker instance = null;
 
-    private MemTracker memTracker = new MemTracker();
+    private Store memTracker = new MemTracker();
 
     private SingleTracker() {
     }
@@ -33,8 +33,8 @@ public final class SingleTracker {
         return memTracker.findAll();
     }
 
-    public boolean delete(int id) {
-        return memTracker.delete(id);
+    public void delete(int id) {
+        memTracker.delete(id);
     }
 
     public boolean replace(int id, Item item) {

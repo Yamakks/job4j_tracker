@@ -16,11 +16,14 @@ public class DeleteAction implements UserAction {
     public boolean execute(Input input, Store memTracker) {
         out.println("=== Delete item ===");
         int id = input.askInt("Enter id: ");
-        if (memTracker.delete(id)) {
+        int init = memTracker.findById(id).getId();
+        if (init != id) {
+            out.println("Ошибка удаления заявки. Заявки с данным ID нет.");
+        } else  {
             out.println("Заявка удалена успешно.");
-        } else {
-            out.println("Ошибка удаления заявки.");
         }
+        memTracker.delete(id);
+
         return true;
     }
 }

@@ -92,8 +92,8 @@ public class SqlTracker implements Store {
             }
 
     @Override
-    public boolean delete(int id) {
-        boolean result = false;
+    public void delete(int id) {
+        boolean result;
         try (PreparedStatement preparedStatement =
                      connection.prepareStatement("DELETE FROM items WHERE id=?")) {
             preparedStatement.setInt(1, id);
@@ -106,7 +106,6 @@ public class SqlTracker implements Store {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return result;
     }
 
     @Override
