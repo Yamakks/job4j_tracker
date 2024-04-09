@@ -75,7 +75,8 @@ public class SqlTracker implements Store {
     public boolean replace(int id, Item item) {
                 boolean result = false;
                 try (PreparedStatement preparedStatement =
-                             connection.prepareStatement("UPDATE items SET name=?, created=? WHERE id=?")) {
+                             connection.prepareStatement("UPDATE items SET name=?, created=? WHERE id=?",
+                        Statement.RETURN_GENERATED_KEYS)) {
                     preparedStatement.setString(1, item.getName());
                     preparedStatement.setTimestamp(2, Timestamp.valueOf(item.getCreated()));
                     preparedStatement.setInt(3, id);
@@ -84,6 +85,13 @@ public class SqlTracker implements Store {
                         System.out.println("Изменения внесены в таблицу.");
                     } else {
                         System.out.println("Изменения не были внесены в таблицу.");
+                    }
+                    try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                        if (generatedKeys.next()) {
+                            item.setId(generatedKeys.getInt(1));
+                        } else {
+                            throw new SQLException("Сгенерированный ключ не найден.");
+                        }
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
