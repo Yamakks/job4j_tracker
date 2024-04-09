@@ -10,6 +10,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.*;
@@ -73,4 +76,35 @@ class SqlTrackerTest {
         assertThat(tracker.findById(item.getId()).getName()).isNull();
     }
 
+    @Test
+    public void whenTestViewAll() {
+        SqlTracker tracker = new SqlTracker(connection);
+        Item item1 = new Item("item1");
+        Item item2 = new Item("item2");
+        Item item3 = new Item("item3");
+        Item item4 = new Item("item4");
+        tracker.add(item1);
+        tracker.add(item2);
+        tracker.add(item3);
+        tracker.add(item4);
+        List<Item> items = new ArrayList<>(Arrays.asList(item1, item2, item3, item4));
+        assertThat(items.equals(tracker.findAll()));
+    }
+
+    @Test
+    public void whenTestFindByName() {
+        SqlTracker tracker = new SqlTracker(connection);
+        Item item1 = new Item("item1");
+        Item item2 = new Item("item2");
+        Item item3 = new Item("item3");
+        Item item4 = new Item("item4");
+        Item item5 = new Item("item1");
+        tracker.add(item1);
+        tracker.add(item2);
+        tracker.add(item3);
+        tracker.add(item4);
+        tracker.add(item5);
+        List<Item> items = new ArrayList<>(Arrays.asList(item1, item5));
+        assertThat(items.equals(tracker.findByName("item1")));
+    }
 }
